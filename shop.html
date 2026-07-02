@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop — RehabChild</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="cart.css"/>
+  <link rel="stylesheet" href="mobile.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ivory: #F5F2ED; --stone: #E8E3DA; --sand: #C9BFB0;
+      --taupe: #8C7F72; --bark: #4A3F35; --ink: #1C1712;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--ivory); color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 3.5rem; background: var(--ivory);
+      border-bottom: 0.5px solid var(--stone);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+
+    .shop-header { padding: 10rem 3.5rem 3rem; border-bottom: 0.5px solid var(--stone); display: flex; align-items: flex-end; justify-content: space-between; }
+    .shop-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(40px, 6vw, 72px); line-height: 1; color: var(--ink); }
+    .shop-title em { font-style: italic; color: var(--taupe); }
+    .shop-count { font-size: 10px; font-weight: 200; letter-spacing: 0.25em; text-transform: uppercase; color: var(--taupe); }
+
+    .shop-filters {
+      display: flex; gap: 0; border-bottom: 0.5px solid var(--stone);
+      padding: 0 3.5rem; overflow-x: auto;
+    }
+    .filter-btn {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--taupe); background: none; border: none; border-bottom: 1.5px solid transparent;
+      padding: 1.25rem 1.5rem; cursor: pointer; transition: all 0.3s; white-space: nowrap;
+    }
+    .filter-btn:hover { color: var(--ink); }
+    .filter-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+    .shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--sand); padding: 1px; margin: 0; }
+
+    .product-card { background: var(--ivory); overflow: hidden; position: relative; cursor: pointer; }
+    .product-card:hover .product-overlay { opacity: 1; }
+    .product-card:hover .product-img-wrap { transform: scale(1.02); }
+
+    .product-img-wrap {
+      aspect-ratio: 3/4; background: var(--stone);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.6s ease; position: relative; overflow: hidden;
+    }
+
+    .product-img-wrap svg { opacity: 0.12; }
+
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      font-size: 8px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--bark); background: var(--sand); padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .product-overlay {
+      position: absolute; inset: 0; background: rgba(28,23,18,0.04);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 2rem; opacity: 0; transition: opacity 0.4s ease;
+    }
+
+    .add-btn {
+      font-size: 9px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--ivory); background: var(--ink); border: none;
+      padding: 12px 28px; cursor: pointer; transition: background 0.3s;
+    }
+    .add-btn:hover { background: var(--bark); }
+
+    .product-info { padding: 1.25rem 1.5rem 2rem; }
+    .product-name { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20px; letter-spacing: 0.05em; color: var(--bark); margin-bottom: 4px; }
+    .product-detail { font-size: 10px; font-weight: 200; letter-spacing: 0.2em; text-transform: uppercase; color: var(--taupe); margin-bottom: 0.75rem; }
+    .product-price { font-size: 13px; font-weight: 300; letter-spacing: 0.1em; color: var(--ink); }
+
+    .product-colors { display: flex; gap: 6px; margin-top: 0.75rem; }
+    .color-dot { width: 12px; height: 12px; border-radius: 50%; border: 0.5px solid var(--sand); cursor: pointer; transition: transform 0.2s; }
+    .color-dot:hover { transform: scale(1.3); }
+
+    footer { background: var(--ink); padding: 3rem 3.5rem; margin-top: 1px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ivory); }
+    .footer-copy { font-size: 10px; font-weight: 200; letter-spacing: 0.15em; color: #3a342e; }
+/* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 102;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 0.5px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--ivory);
+      z-index: 101;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu-inner a {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 42px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu-inner a:hover { color: var(--taupe); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex !important; }
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 2rem;
+      right: 1.75rem;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--taupe);
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 103;
+    }
+
+    .mobile-menu-close:hover { color: var(--ink); }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">RehabChild</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Collection</a></li>
+      <li><a href="index.html#philosophy">Philosophy</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+    <div class="mobile-menu-inner">
+      <a href="index.html" onclick="toggleMenu()">Home</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="lookbook.html" onclick="toggleMenu()">Lookbook</a>
+      <a href="about.html" onclick="toggleMenu()">About</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+  </div>
+
+  <div class="shop-header">
+    <h1 class="shop-title">The<br><em>Collection</em></h1>
+    <span class="shop-count">9 pieces — SS26</span>
+  </div>
+
+  <div class="shop-filters">
+    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('outerwear', this)">Outerwear</button>
+    <button class="filter-btn" onclick="filterProducts('tops', this)">Tops</button>
+    <button class="filter-btn" onclick="filterProducts('bottoms', this)">Bottoms</button>
+    <button class="filter-btn" onclick="filterProducts('essentials', this)">Essentials</button>
+  </div>
+
+  <div class="shop-grid" id="shopGrid">
+
+    <div class="product-card" data-category="outerwear">
+      <div class="product-img-wrap">
+  <img src="still-coat.jpg" alt="The Still Coat"/>
+  <span class="product-badge">New</span>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('still-coat', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">The Still Coat</div>
+        <div class="product-detail">Oversized — Wool blend</div>
+        <div class="product-price">GH₵ 980</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#C9BFB0;" title="Sand"></div>
+          <div class="color-dot" style="background:#1C1712;" title="Ink"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="tops">
+      <div class="product-img-wrap">
+  <img src="rehab-tee.jpg" alt="Rehab Tee"/>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('rehab-tee', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">Rehab Tee</div>
+        <div class="product-detail">Relaxed — 100% Cotton</div>
+        <div class="product-price">GH₵ 220</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#E8E3DA;" title="Stone"></div>
+          <div class="color-dot" style="background:#1C1712;" title="Ink"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="bottoms">
+      <div class="product-img-wrap">
+  <img src="stage-trousers.jpg" alt="Stage Trousers"/>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('stage-trousers', 'Stone')">Add to cart</button></div>
+</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Stage Trousers</div>
+        <div class="product-detail">Wide Leg — Linen blend</div>
+        <div class="product-price">GH₵ 420</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#E8E3DA;" title="Stone"></div>
+          <div class="color-dot" style="background:#C9BFB0;" title="Sand"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="essentials">
+      <div class="product-img-wrap">
+  <img src="healing-hoodie.jpg" alt="Healing Hoodie"/>
+  <span class="product-badge">Essential</span>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('healing-hoodie', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">Healing Hoodie</div>
+        <div class="product-detail">Oversized — Fleece</div>
+        <div class="product-price">GH₵ 380</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#1C1712;" title="Ink"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="tops">
+      <div class="product-img-wrap">
+  <img src="quiet-shirt.jpg" alt="Quiet Shirt"/>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('quiet-shirt', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">Quiet Shirt</div>
+        <div class="product-detail">Relaxed — Cotton poplin</div>
+        <div class="product-price">GH₵ 290</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#C9BFB0;" title="Sand"></div>
+          <div class="color-dot" style="background:#8C7F72;" title="Taupe"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="outerwear">
+      <div class="product-img-wrap">
+  <img src="rehab-jacket.jpg" alt="The Rehab Jacket"/>
+  <span class="product-badge">Limited</span>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('rehab-jacket', 'Ink')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">The Rehab Jacket</div>
+        <div class="product-detail">Structured — Cotton twill</div>
+        <div class="product-price">GH₵ 760</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#4A3F35;" title="Bark"></div>
+          <div class="color-dot" style="background:#1C1712;" title="Ink"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="bottoms">
+      <div class="product-img-wrap">
+  <img src="still-shorts.jpg" alt="Still Shorts"/>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('still-shorts', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">Still Shorts</div>
+        <div class="product-detail">Relaxed — Linen</div>
+        <div class="product-price">GH₵ 240</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#E8E3DA;" title="Stone"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="essentials">
+      <div class="product-img-wrap">
+  <img src="rehab-cap.jpg" alt="Rehab Cap"/>
+  <span class="product-badge">Essential</span>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('rehab-cap', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">Rehab Cap</div>
+        <div class="product-detail">Unstructured — Cotton</div>
+        <div class="product-price">GH₵ 160</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#1C1712;" title="Ink"></div>
+          <div class="color-dot" style="background:#C9BFB0;" title="Sand"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="essentials">
+     <div class="product-img-wrap">
+  <img src="stage-tote.jpg" alt="Stage Tote"/>
+  <div class="product-overlay"><button class="add-btn" onclick="addToCart('stage-tote', 'Ivory')">Add to cart</button></div>
+</div>
+      <div class="product-info">
+        <div class="product-name">Stage Tote</div>
+        <div class="product-detail">Medium — Canvas</div>
+        <div class="product-price">GH₵ 195</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#F5F2ED;" title="Ivory"></div>
+          <div class="color-dot" style="background:#1C1712;" title="Ink"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">RehabChild</div>
+    <span class="footer-copy">© 2026 RehabChild — The Healing Stage</span>
+  </footer>
+
+  <!-- Cart HTML -->
+  <div class="cart-overlay" id="cartOverlay" onclick="Cart.closeDrawer()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <div>
+        <span class="cart-header-title">Your Cart</span>
+        <span class="cart-header-count" id="cartHeaderCount"></span>
+      </div>
+      <button class="cart-close" onclick="Cart.closeDrawer()">Close</button>
+    </div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-footer" id="cartFooter">
+      <div class="cart-subtotal">
+        <span class="cart-subtotal-label">Subtotal</span>
+        <span class="cart-subtotal-amount" id="cartTotal">GH₵ 0</span>
+      </div>
+      <p class="cart-note">Shipping calculated at checkout. All prices in Ghana Cedis.</p>
+      <button class="checkout-btn" onclick="handleCheckout()">Proceed to checkout</button>
+      <button class="continue-btn" onclick="Cart.closeDrawer()">Continue shopping</button>
+    </div>
+  </div>
+  <div class="cart-toast" id="cartToast"></div>
+
+  <script src="cart.js"></script>
+  <script>
+    function filterProducts(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.product-card').forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    const products = {
+      'still-coat':    { id: 'still-coat',    name: 'The Still Coat',   price: 980 },
+      'rehab-tee':     { id: 'rehab-tee',     name: 'Rehab Tee',        price: 220 },
+      'stage-trousers':{ id: 'stage-trousers',name: 'Stage Trousers',   price: 420 },
+      'healing-hoodie':{ id: 'healing-hoodie',name: 'Healing Hoodie',   price: 380 },
+      'quiet-shirt':   { id: 'quiet-shirt',   name: 'Quiet Shirt',      price: 290 },
+      'rehab-jacket':  { id: 'rehab-jacket',  name: 'The Rehab Jacket', price: 760 },
+      'still-shorts':  { id: 'still-shorts',  name: 'Still Shorts',     price: 240 },
+      'rehab-cap':     { id: 'rehab-cap',     name: 'Rehab Cap',        price: 160 },
+      'stage-tote':    { id: 'stage-tote',    name: 'Stage Tote',       price: 195 },
+    };
+
+    function addToCart(productId, color) {
+      const product = products[productId];
+      if (product) Cart.add({ ...product, color: color || 'Ivory' });
+    }
+
+    function handleCheckout() {
+      alert('Checkout coming soon — stay on the healing stage. 🤍');
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

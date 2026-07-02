@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — RehabChild</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="mobile.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ivory: #F5F2ED; --stone: #E8E3DA; --sand: #C9BFB0;
+      --taupe: #8C7F72; --bark: #4A3F35; --ink: #1C1712;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--ivory); color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 3.5rem; background: var(--ivory);
+      border-bottom: 0.5px solid var(--stone);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+
+    /* Hero */
+    .about-hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .hero-left {
+      padding: 10rem 4rem 5rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      border-right: 0.5px solid var(--stone);
+    }
+
+    .hero-tag {
+      font-size: 10px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(48px, 6vw, 80px); line-height: 0.95;
+      color: var(--ink);
+      opacity: 0; animation: fadeUp 1.2s ease forwards 0.5s;
+    }
+
+    .hero-title em { font-style: italic; color: var(--taupe); }
+
+    .hero-right {
+      padding: 10rem 4rem 5rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      background: var(--stone);
+    }
+
+    .hero-quote {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-weight: 300; font-size: clamp(20px, 2.5vw, 30px);
+      line-height: 1.5; color: var(--bark); max-width: 380px;
+      opacity: 0; animation: fadeUp 1.2s ease forwards 0.7s;
+    }
+
+    .hero-quote cite {
+      display: block; font-style: normal; font-size: 10px;
+      font-family: 'Jost', sans-serif; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--taupe); margin-top: 1.5rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Origin story */
+    .origin {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .origin-img {
+      background: var(--stone);
+      min-height: 600px;
+      display: flex; align-items: center; justify-content: center;
+      border-right: 0.5px solid var(--sand);
+    }
+
+    .origin-img svg { opacity: 0.15; }
+
+    .origin-text {
+      padding: 5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .section-label {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 2rem;
+    }
+
+    .origin-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(30px, 3.5vw, 46px); line-height: 1.15;
+      color: var(--ink); margin-bottom: 2rem;
+    }
+
+    .origin-title em { font-style: italic; color: var(--taupe); }
+
+    .origin-body {
+      font-size: 13px; font-weight: 300; line-height: 2.1;
+      color: var(--taupe); max-width: 400px;
+    }
+
+    .origin-body p + p { margin-top: 1.25rem; }
+
+    /* Values row */
+    .values-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .value-block {
+      padding: 4rem 3rem;
+      border-right: 0.5px solid var(--stone);
+    }
+
+    .value-block:last-child { border-right: none; }
+
+    .value-num {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 13px; color: var(--sand); margin-bottom: 1.5rem;
+    }
+
+    .value-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 28px; letter-spacing: 0.05em; color: var(--bark);
+      margin-bottom: 1rem;
+    }
+
+    .value-desc {
+      font-size: 12px; font-weight: 200; line-height: 1.9;
+      color: var(--taupe);
+    }
+
+    /* Team / founder */
+    .founder {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .founder-text {
+      padding: 5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 0.5px solid var(--stone);
+    }
+
+    .founder-name {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(32px, 4vw, 52px); line-height: 1;
+      color: var(--ink); margin-bottom: 0.5rem;
+    }
+
+    .founder-role {
+      font-size: 10px; font-weight: 200; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 2rem;
+    }
+
+    .founder-bio {
+      font-size: 13px; font-weight: 300; line-height: 2;
+      color: var(--taupe); max-width: 380px;
+    }
+
+    .founder-img {
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 500px;
+    }
+
+    .founder-img svg { opacity: 0.08; }
+
+    /* Manifesto */
+    .manifesto {
+      background: var(--ink);
+      padding: 7rem 3.5rem;
+      display: flex; flex-direction: column; align-items: center;
+      border-bottom: 0.5px solid #2e2820;
+    }
+
+    .manifesto-label {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 3rem;
+    }
+
+    .manifesto-lines {
+      display: flex; flex-direction: column; gap: 1.5rem;
+      max-width: 600px; width: 100%;
+    }
+
+    .manifesto-line {
+      display: flex; align-items: flex-start; gap: 1.5rem;
+      padding-bottom: 1.5rem; border-bottom: 0.5px solid #2e2820;
+    }
+
+    .manifesto-line:last-child { border-bottom: none; }
+
+    .m-num {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 13px; color: var(--taupe); min-width: 24px; margin-top: 2px;
+    }
+
+    .m-text {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(18px, 2vw, 24px); line-height: 1.4;
+      color: var(--sand);
+    }
+
+    /* CTA */
+    .about-cta {
+      padding: 5rem 3.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(28px, 4vw, 52px); color: var(--ink);
+    }
+
+    .cta-title em { font-style: italic; color: var(--taupe); }
+
+    .cta-links { display: flex; gap: 1rem; }
+
+    .cta-btn {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.3em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 14px 28px; transition: all 0.3s ease;
+    }
+
+    .cta-btn.primary { background: var(--ink); color: var(--ivory); }
+    .cta-btn.primary:hover { background: var(--bark); }
+    .cta-btn.secondary { border: 0.5px solid var(--sand); color: var(--ink); }
+    .cta-btn.secondary:hover { background: var(--stone); }
+
+    footer {
+      background: var(--ink); padding: 3rem 3.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ivory); }
+    .footer-copy { font-size: 10px; font-weight: 200; letter-spacing: 0.15em; color: #3a342e; }
+  
+  /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 102;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 0.5px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--ivory);
+      z-index: 101;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu-inner a {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 42px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu-inner a:hover { color: var(--taupe); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex !important; }
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 2rem;
+      right: 1.75rem;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--taupe);
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 103;
+    }
+
+    .mobile-menu-close:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">RehabChild</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Collection</a></li>
+      <li><a href="index.html#philosophy">Philosophy</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+    <div class="mobile-menu-inner">
+      <a href="index.html" onclick="toggleMenu()">Home</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="lookbook.html" onclick="toggleMenu()">Lookbook</a>
+      <a href="about.html" onclick="toggleMenu()">About</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="hero-left">
+      <p class="hero-tag">Our Story</p>
+      <h1 class="hero-title">Born from<br>the <em>journey<br>inward.</em></h1>
+    </div>
+    <div class="hero-right">
+      <blockquote class="hero-quote">
+        "RehabChild is not a brand. It is a stage — the one you reach when you decide to start again, quietly, with intention."
+        <cite>— Founder's Note</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Origin -->
+  <section class="origin">
+    <div class="origin-img">
+      <svg width="180" height="240" viewBox="0 0 180 240" fill="none">
+        <circle cx="90" cy="120" r="80" stroke="#4A3F35" stroke-width="0.5"/>
+        <circle cx="90" cy="120" r="50" stroke="#4A3F35" stroke-width="0.5"/>
+        <circle cx="90" cy="120" r="20" stroke="#4A3F35" stroke-width="0.5"/>
+        <line x1="10" y1="120" x2="170" y2="120" stroke="#4A3F35" stroke-width="0.5"/>
+        <line x1="90" y1="40" x2="90" y2="200" stroke="#4A3F35" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="origin-text">
+      <p class="section-label">The Origin</p>
+      <h2 class="origin-title">Where the name<br><em>comes from</em></h2>
+      <div class="origin-body">
+        <p>RehabChild was born from a deeply personal place — the recognition that healing is not a single moment, but a practice. A child in rehab is not broken. They are in the process of becoming whole.</p>
+        <p>The brand was created for those who are on that journey. People who have chosen to do the quiet, unglamorous work of returning to themselves. Not loudly. Not for applause. But with intention.</p>
+        <p>Every piece is designed to hold that space — to be worn through the hard days and the healing ones alike.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values-row">
+    <div class="value-block">
+      <div class="value-num">i.</div>
+      <div class="value-title">Stillness</div>
+      <div class="value-desc">We design for quiet confidence. Clothes that don't demand attention — they hold it. Pieces that let you exist without announcement.</div>
+    </div>
+    <div class="value-block">
+      <div class="value-num">ii.</div>
+      <div class="value-title">Intention</div>
+      <div class="value-desc">Every fabric choice, every silhouette, every stitch is considered. We believe that conscious creation leads to conscious wearing.</div>
+    </div>
+    <div class="value-block">
+      <div class="value-num">iii.</div>
+      <div class="value-title">Growth</div>
+      <div class="value-desc">RehabChild grows with you. Our pieces are designed to be worn through every stage — the becoming, the being, the returning.</div>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section class="founder">
+    <div class="founder-text">
+      <p class="section-label">The Founder</p>
+      <h2 class="founder-name">Alan C.</h2>
+      <p class="founder-role">Founder & Creative Director</p>
+      <p class="founder-bio">RehabChild began as a personal project — a way to process growth through creativity. What started as sketches became silhouettes, and silhouettes became a brand built for those who understand that the most radical thing you can do is heal slowly, deliberately, and without apology.</p>
+    </div>
+    <div class="founder-img">
+      <svg width="160" height="200" viewBox="0 0 160 200" fill="none">
+        <circle cx="80" cy="60" r="35" stroke="#F5F2ED" stroke-width="0.5"/>
+        <path d="M20 200 Q20 130 80 130 Q140 130 140 200" stroke="#F5F2ED" stroke-width="0.5" fill="none"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <section class="manifesto">
+    <p class="manifesto-label">The RehabChild Manifesto</p>
+    <div class="manifesto-lines">
+      <div class="manifesto-line">
+        <span class="m-num">01</span>
+        <span class="m-text">We believe healing is not linear — and neither is style.</span>
+      </div>
+      <div class="manifesto-line">
+        <span class="m-num">02</span>
+        <span class="m-text">We dress for the version of ourselves we are becoming.</span>
+      </div>
+      <div class="manifesto-line">
+        <span class="m-num">03</span>
+        <span class="m-text">We choose stillness over noise, intention over impulse.</span>
+      </div>
+      <div class="manifesto-line">
+        <span class="m-num">04</span>
+        <span class="m-text">We wear our healing — not as a wound, but as a declaration.</span>
+      </div>
+      <div class="manifesto-line">
+        <span class="m-num">05</span>
+        <span class="m-text">We are always, still, becoming.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="about-cta">
+    <h2 class="cta-title">Ready to wear<br><em>your healing?</em></h2>
+    <div class="cta-links">
+      <a href="shop.html" class="cta-btn primary">Shop now</a>
+      <a href="contact.html" class="cta-btn secondary">Get in touch</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+  </script>
+
+  <footer>
+    <div class="footer-logo">RehabChild</div>
+    <span class="footer-copy">© 2026 RehabChild — The Healing Stage</span>
+  </footer>
+
+</body>
+</html>

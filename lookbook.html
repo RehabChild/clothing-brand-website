@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lookbook — RehabChild</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="mobile.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ivory: #F5F2ED; --stone: #E8E3DA; --sand: #C9BFB0;
+      --taupe: #8C7F72; --bark: #4A3F35; --ink: #1C1712;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--ink); color: var(--ivory); font-family: 'Jost', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 3.5rem; background: transparent;
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ivory); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--ivory); }
+
+    /* Hero */
+    .lb-hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3.5rem 5rem;
+      position: relative;
+      border-bottom: 0.5px solid #2e2820;
+    }
+
+    .lb-hero-bg {
+      position: absolute; inset: 0;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .lb-hero-bg svg { opacity: 0.04; width: 80%; }
+
+    .lb-hero-tag {
+      font-size: 10px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe);
+      margin-bottom: 1.5rem; position: relative; z-index: 1;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .lb-hero-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(60px, 10vw, 130px); line-height: 0.9;
+      letter-spacing: -0.01em; color: var(--ivory);
+      position: relative; z-index: 1;
+      opacity: 0; animation: fadeUp 1.2s ease forwards 0.5s;
+    }
+
+    .lb-hero-title em { font-style: italic; color: var(--taupe); }
+
+    .lb-hero-sub {
+      font-size: 11px; font-weight: 200; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--taupe);
+      margin-top: 2rem; position: relative; z-index: 1;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Chapter label */
+    .chapter {
+      padding: 4rem 3.5rem 2rem;
+      display: flex; align-items: center; gap: 2rem;
+      border-bottom: 0.5px solid #2e2820;
+    }
+    .chapter-num {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 13px; color: var(--taupe); letter-spacing: 0.1em;
+    }
+    .chapter-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 28px; letter-spacing: 0.06em; color: var(--ivory);
+    }
+    .chapter-line { flex: 1; height: 0.5px; background: #2e2820; }
+
+    /* Editorial grid layouts */
+    .lb-grid-1 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1px; background: #2e2820;
+    }
+
+    .lb-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px; background: #2e2820;
+    }
+
+    .lb-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 1px; background: #2e2820;
+    }
+
+    .lb-grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px; background: #2e2820;
+    }
+
+    .lb-frame {
+      background: #221d18;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      transition: background 0.5s ease;
+    }
+
+    .lb-frame:hover { background: #2a2420; }
+
+    .lb-frame.tall { aspect-ratio: 2/3; }
+    .lb-frame.square { aspect-ratio: 1/1; }
+    .lb-frame.wide { aspect-ratio: 4/3; }
+    .lb-frame.portrait { aspect-ratio: 3/4; }
+
+    .lb-frame svg { opacity: 0.1; transition: opacity 0.4s ease; }
+    .lb-frame:hover svg { opacity: 0.18; }
+
+    .lb-frame-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(28,23,18,0.85));
+      transform: translateY(100%); transition: transform 0.4s ease;
+    }
+
+    .lb-frame:hover .lb-frame-info { transform: translateY(0); }
+
+    .lb-frame-name {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 18px; color: var(--ivory); margin-bottom: 4px;
+    }
+
+    .lb-frame-detail {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--taupe);
+    }
+
+    .lb-frame-num {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      font-size: 9px; font-weight: 200; letter-spacing: 0.2em; color: #3a342e;
+    }
+
+    /* Quote block */
+    .lb-quote {
+      padding: 6rem 3.5rem;
+      border-bottom: 0.5px solid #2e2820;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .lb-quote blockquote {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-weight: 300; font-size: clamp(24px, 3.5vw, 42px);
+      line-height: 1.4; color: var(--sand);
+      text-align: center; max-width: 680px;
+    }
+
+    .lb-quote blockquote cite {
+      display: block; font-style: normal; font-size: 10px;
+      font-family: 'Jost', sans-serif; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--taupe); margin-top: 1.5rem;
+    }
+
+    /* Text + image split */
+    .lb-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 0.5px solid #2e2820;
+    }
+
+    .lb-split-text {
+      padding: 5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 0.5px solid #2e2820;
+    }
+
+    .lb-split-label {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 2rem;
+    }
+
+    .lb-split-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(28px, 3vw, 40px); line-height: 1.2;
+      color: var(--ivory); margin-bottom: 1.5rem;
+    }
+
+    .lb-split-title em { font-style: italic; color: var(--taupe); }
+
+    .lb-split-body {
+      font-size: 13px; font-weight: 200; line-height: 2;
+      color: var(--taupe); max-width: 340px;
+    }
+
+    .lb-split-img {
+      background: #221d18;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 500px;
+    }
+
+    .lb-split-img svg { opacity: 0.1; }
+
+    /* Shop link */
+    .lb-shop-link {
+      padding: 5rem 3.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 0.5px solid #2e2820;
+    }
+
+    .lb-shop-cta {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(28px, 4vw, 52px); color: var(--ivory);
+    }
+
+    .lb-shop-cta em { font-style: italic; color: var(--taupe); }
+
+    .lb-shop-btn {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--ivory);
+      text-decoration: none; border: 0.5px solid var(--taupe);
+      padding: 14px 32px; transition: all 0.3s ease;
+    }
+
+    .lb-shop-btn:hover { background: var(--ivory); color: var(--ink); border-color: var(--ivory); }
+
+    footer {
+      background: #131009; padding: 3rem 3.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ivory); }
+    .footer-copy { font-size: 10px; font-weight: 200; letter-spacing: 0.15em; color: #3a342e; }
+  /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 102;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 0.5px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--ivory);
+      z-index: 101;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu-inner a {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 42px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu-inner a:hover { color: var(--taupe); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex !important; }
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 2rem;
+      right: 1.75rem;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--taupe);
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 103;
+    }
+
+    .mobile-menu-close:hover { color: var(--ink); }
+
+    .lb-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      inset: 0;
+      opacity: 0.85;
+      transition: opacity 0.4s ease;
+    }
+
+    .lb-frame:hover img { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">RehabChild</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Collection</a></li>
+      <li><a href="index.html#philosophy">Philosophy</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+    <div class="mobile-menu-inner">
+      <a href="index.html" onclick="toggleMenu()">Home</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="lookbook.html" onclick="toggleMenu()">Lookbook</a>
+      <a href="about.html" onclick="toggleMenu()">About</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="lb-hero">
+    <div class="lb-hero-bg">
+      <svg viewBox="0 0 800 600" fill="none">
+        <circle cx="400" cy="300" r="280" stroke="#F5F2ED" stroke-width="0.5"/>
+        <circle cx="400" cy="300" r="180" stroke="#F5F2ED" stroke-width="0.5"/>
+        <circle cx="400" cy="300" r="80" stroke="#F5F2ED" stroke-width="0.5"/>
+        <line x1="0" y1="300" x2="800" y2="300" stroke="#F5F2ED" stroke-width="0.5"/>
+        <line x1="400" y1="0" x2="400" y2="600" stroke="#F5F2ED" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <p class="lb-hero-tag">SS26 — Visual Story</p>
+    <h1 class="lb-hero-title">Look<br><em>book</em></h1>
+    <p class="lb-hero-sub">The Healing Stage — A collection told in quiet moments</p>
+  </section>
+
+  <!-- Chapter 1 -->
+  <div class="chapter">
+    <span class="chapter-num">i.</span>
+    <span class="chapter-title">The Stillness</span>
+    <div class="chapter-line"></div>
+  </div>
+
+  <div class="lb-grid-1">
+    <div class="lb-frame tall">
+  <img src="still-coat.jpg" alt="The Still Coat"/>
+  <span class="lb-frame-num">01</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">The Still Coat</div>
+    <div class="lb-frame-detail">Oversized — Warm Sand</div>
+  </div>
+</div>
+    <div style="display:flex; flex-direction:column; gap:1px; background:#2e2820;">
+      <div class="lb-frame wide" style="flex:1;">
+  <img src="rehab-tee.jpg" alt="Rehab Tee"/>
+  <span class="lb-frame-num">02</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Rehab Tee</div>
+    <div class="lb-frame-detail">Relaxed — Ivory</div>
+  </div>
+</div>
+      </div>
+      <div class="lb-frame wide" style="flex:1;">
+  <img src="stage-trousers.jpg" alt="Stage Trousers"/>
+  <span class="lb-frame-num">03</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Stage Trousers</div>
+    <div class="lb-frame-detail">Wide Leg — Stone</div>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div class="lb-quote">
+    <blockquote>
+      "To dress with intention is to tell yourself — I am worth the care."
+      <cite>— RehabChild, SS26</cite>
+    </blockquote>
+  </div>
+
+  <!-- Chapter 2 -->
+  <div class="chapter">
+    <span class="chapter-num">ii.</span>
+    <span class="chapter-title">The Becoming</span>
+    <div class="chapter-line"></div>
+  </div>
+
+  <div class="lb-grid-2">
+    <div class="lb-frame portrait">
+  <img src="healing-hoodie.jpg" alt="Healing Hoodie"/>
+  <span class="lb-frame-num">04</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Healing Hoodie</div>
+    <div class="lb-frame-detail">Oversized — Ivory</div>
+  </div>
+</div>
+    </div>
+    <div class="lb-frame portrait">
+  <img src="quiet-shirt.jpg" alt="Quiet Shirt"/>
+  <span class="lb-frame-num">05</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Quiet Shirt</div>
+    <div class="lb-frame-detail">Relaxed — Sand</div>
+  </div>
+</div>
+    </div>
+    <div class="lb-frame portrait">
+  <img src="rehab-jacket.jpg" alt="Rehab Jacket"/>
+  <span class="lb-frame-num">06</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Rehab Jacket</div>
+    <div class="lb-frame-detail">Structured — Ink</div>
+  </div>
+</div>
+    </div>
+  </div>
+
+  <!-- Split section -->
+  <div class="lb-split">
+    <div class="lb-split-text">
+      <p class="lb-split-label">Designer's Note</p>
+      <h2 class="lb-split-title">Clothes that hold<br><em>space for you</em></h2>
+      <p class="lb-split-body">Each piece in the SS26 collection was designed around one question: what does it feel like to wear something that asks nothing of you? The answer is stillness. Ease. A quiet confidence that needs no announcement.</p>
+    </div>
+   <div class="lb-split-img">
+  <img src="still-shorts.jpg" alt="Still Shorts" style="width:100%; height:100%; object-fit:cover;"/>
+</div>
+  </div>
+
+  <!-- Chapter 3 -->
+  <div class="chapter">
+    <span class="chapter-num">iii.</span>
+    <span class="chapter-title">The Details</span>
+    <div class="chapter-line"></div>
+  </div>
+
+  <div class="lb-grid-4">
+    <div class="lb-frame square">
+  <img src="rehab-cap.jpg" alt="Rehab Cap"/>
+  <span class="lb-frame-num">07</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Rehab Cap</div>
+    <div class="lb-frame-detail">Unstructured — Ivory</div>
+  </div>
+</div>
+    </div>
+    <div class="lb-frame square">
+  <img src="stage-tote.jpg" alt="Stage Tote"/>
+  <span class="lb-frame-num">08</span>
+  <div class="lb-frame-info">
+    <div class="lb-frame-name">Stage Tote</div>
+    <div class="lb-frame-detail">Medium — Canvas</div>
+  </div>
+</div>
+    </div>
+  </div>
+
+  <!-- Shop CTA -->
+  <div class="lb-shop-link">
+    <h2 class="lb-shop-cta">Ready to<br><em>wear your healing?</em></h2>
+    <a href="shop.html" class="lb-shop-btn">Shop the collection</a>
+  </div>
+
+  <footer>
+    <div class="footer-logo">RehabChild</div>
+    <span class="footer-copy">© 2026 RehabChild — The Healing Stage</span>
+  </footer>
+
+<script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

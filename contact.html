@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — RehabChild</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="mobile.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ivory: #F5F2ED; --stone: #E8E3DA; --sand: #C9BFB0;
+      --taupe: #8C7F72; --bark: #4A3F35; --ink: #1C1712;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--ivory); color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 3.5rem; background: var(--ivory);
+      border-bottom: 0.5px solid var(--stone);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+
+    /* Page layout */
+    .contact-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* Left panel */
+    .contact-left {
+      padding: 10rem 4rem 5rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      border-right: 0.5px solid var(--stone);
+      background: var(--stone);
+    }
+
+    .contact-top { }
+
+    .contact-tag {
+      font-size: 10px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .contact-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(44px, 5.5vw, 72px); line-height: 0.95;
+      color: var(--ink);
+      opacity: 0; animation: fadeUp 1.2s ease forwards 0.5s;
+    }
+
+    .contact-title em { font-style: italic; color: var(--taupe); }
+
+    .contact-desc {
+      font-size: 13px; font-weight: 300; line-height: 2;
+      color: var(--taupe); max-width: 340px; margin-top: 2.5rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.7s;
+    }
+
+    .contact-details { margin-top: 4rem; }
+
+    .contact-detail-item {
+      padding: 1.5rem 0;
+      border-top: 0.5px solid var(--sand);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .contact-detail-item:last-child { border-bottom: 0.5px solid var(--sand); }
+
+    .detail-label {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--taupe);
+    }
+
+    .detail-value {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 18px; letter-spacing: 0.05em; color: var(--bark);
+    }
+
+    .contact-bottom {
+      margin-top: 4rem;
+    }
+
+    .social-label {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 1rem;
+    }
+
+    .social-links { display: flex; gap: 1.5rem; }
+
+    .social-link {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--bark); text-decoration: none;
+      border-bottom: 0.5px solid var(--sand); padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .social-link:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* Right panel — form */
+    .contact-right {
+      padding: 10rem 4rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+      background: var(--ivory);
+    }
+
+    .form-label {
+      font-size: 9px; font-weight: 200; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--taupe); margin-bottom: 3rem;
+    }
+
+    .form-group {
+      margin-bottom: 2.5rem; position: relative;
+    }
+
+    .form-group label {
+      display: block; font-size: 9px; font-weight: 200;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 0.75rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 0.5px solid var(--sand);
+      padding: 0.75rem 0; font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 14px; color: var(--ink);
+      outline: none; transition: border-color 0.3s ease;
+      appearance: none;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--sand); font-weight: 200; }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-bottom-color: var(--ink); }
+
+    .form-group textarea { resize: none; height: 100px; line-height: 1.8; }
+
+    .form-group select { cursor: pointer; color: var(--ink); }
+    .form-group select option { background: var(--ivory); color: var(--ink); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+    .submit-btn {
+      margin-top: 1rem;
+      display: flex; align-items: center; gap: 1rem;
+      background: none; border: none; cursor: pointer;
+      padding: 0; font-family: 'Jost', sans-serif;
+    }
+
+    .submit-text {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--ink);
+      border-bottom: 0.5px solid var(--sand); padding-bottom: 4px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .submit-btn:hover .submit-text { border-color: var(--ink); }
+
+    .submit-arrow {
+      width: 32px; height: 32px; border: 0.5px solid var(--sand);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover .submit-arrow {
+      background: var(--ink); border-color: var(--ink);
+    }
+
+    .submit-btn:hover .submit-arrow svg path { stroke: var(--ivory); }
+
+    /* Success message */
+    .success-msg {
+      display: none;
+      padding: 1.5rem;
+      border: 0.5px solid var(--sand);
+      margin-top: 1.5rem;
+    }
+
+    .success-msg p {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 16px; color: var(--bark); line-height: 1.6;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      background: var(--ink); padding: 3rem 3.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ivory); }
+    .footer-copy { font-size: 10px; font-weight: 200; letter-spacing: 0.15em; color: #3a342e; }
+  
+  /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 102;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 0.5px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--ivory);
+      z-index: 101;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu-inner a {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 42px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu-inner a:hover { color: var(--taupe); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex !important; }
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 2rem;
+      right: 1.75rem;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--taupe);
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 103;
+    }
+
+    .mobile-menu-close:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <<nav>
+    <a href="index.html" class="nav-logo">RehabChild</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Collection</a></li>
+      <li><a href="index.html#philosophy">Philosophy</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+    <div class="mobile-menu-inner">
+      <a href="index.html" onclick="toggleMenu()">Home</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="lookbook.html" onclick="toggleMenu()">Lookbook</a>
+      <a href="about.html" onclick="toggleMenu()">About</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+  </div>
+  <div class="contact-wrap">
+
+    <!-- Left -->
+    <div class="contact-left">
+      <div class="contact-top">
+        <p class="contact-tag">Get in touch</p>
+        <h1 class="contact-title">Let's<br><em>talk.</em></h1>
+        <p class="contact-desc">Whether you're a stockist, a collaborator, a press inquiry, or someone who simply wants to share their healing journey — we'd love to hear from you.</p>
+
+        <div class="contact-details">
+          <div class="contact-detail-item">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">hello@rehabchild.com</span>
+          </div>
+          <div class="contact-detail-item">
+            <span class="detail-label">Based in</span>
+            <span class="detail-value">Accra, Ghana</span>
+          </div>
+          <div class="contact-detail-item">
+            <span class="detail-label">Response time</span>
+            <span class="detail-value">Within 48 hours</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-bottom">
+        <p class="social-label">Follow the journey</p>
+        <div class="social-links">
+          <a href="https://instagram.com/nuski.y" target="_blank" class="social-link">Instagram</a>
+          <a href="https://tiktok.com/@therehabchild" target="_blank" class="social-link">TikTok</a>
+          <a href="#" class="social-link">Pinterest</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right — Form -->
+    <div class="contact-right">
+      <p class="form-label">Send a message</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" placeholder="Your first name" id="firstName"/>
+        </div>
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" placeholder="Your last name" id="lastName"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" placeholder="your@email.com" id="email"/>
+      </div>
+
+      <div class="form-group">
+        <label>Inquiry type</label>
+        <select id="inquiry">
+          <option value="" disabled selected>Select a topic</option>
+          <option value="general">General inquiry</option>
+          <option value="wholesale">Wholesale / Stockist</option>
+          <option value="press">Press & Media</option>
+          <option value="collab">Collaboration</option>
+          <option value="order">Order support</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us what's on your mind..." id="message"></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="handleSubmit()">
+        <span class="submit-text">Send message</span>
+        <span class="submit-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7 H12 M8 3 L12 7 L8 11" stroke="#1C1712" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </button>
+
+      <div class="success-msg" id="successMsg">
+        <p>"Your message has been received. We'll be in touch within 48 hours — thank you for reaching out."</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">RehabChild</div>
+    <span class="footer-copy">© 2026 RehabChild — The Healing Stage</span>
+  </footer>
+
+  <script>
+    // Replace YOUR_FORM_ID below with the ID Formspree gives you after signup
+    const CONTACT_FORM_ENDPOINT = 'https://formspree.io/f/mzdljlrr';
+
+    async function handleSubmit() {
+      const first = document.getElementById('firstName').value.trim();
+      const last = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const inquiry = document.getElementById('inquiry').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!first || !email || !message) {
+        alert('Please fill in your name, email, and message.');
+        return;
+      }
+
+      const btn = document.querySelector('.submit-btn');
+      const originalText = btn.querySelector('.submit-text').textContent;
+      btn.querySelector('.submit-text').textContent = 'Sending...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(CONTACT_FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: JSON.stringify({
+            firstName: first, lastName: last, email, inquiry, message
+          }),
+          mode: 'cors'
+        });
+
+        if (res.ok) {
+          document.getElementById('successMsg').style.display = 'block';
+          document.getElementById('firstName').value = '';
+          document.getElementById('lastName').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('inquiry').value = '';
+          document.getElementById('message').value = '';
+        } else {
+          alert('Something went wrong sending your message. Please try again or email us directly.');
+        }
+      } catch (err) {
+        alert('Something went wrong sending your message. Please check your connection and try again.');
+      } finally {
+        btn.querySelector('.submit-text').textContent = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>

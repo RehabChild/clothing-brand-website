@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RehabChild — The Healing Stage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="mobile.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ivory:    #F5F2ED;
+      --stone:    #E8E3DA;
+      --sand:     #C9BFB0;
+      --taupe:    #8C7F72;
+      --bark:     #4A3F35;
+      --ink:      #1C1712;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--ink);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+    }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 0.5px solid var(--taupe);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 3.5rem;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 0.5px solid var(--sand);
+      opacity: 0.6;
+      animation: breathe 8s ease-in-out infinite;
+    }
+
+    .hero-circle:nth-child(1) { width: 600px; height: 600px; top: -100px; right: -150px; animation-delay: 0s; }
+    .hero-circle:nth-child(2) { width: 380px; height: 380px; top: 60px; right: 0px; animation-delay: 2s; }
+    .hero-circle:nth-child(3) { width: 180px; height: 180px; top: 200px; right: 180px; animation-delay: 4s; }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.04); opacity: 0.7; }
+    }
+
+    .hero-tag {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(56px, 9vw, 120px);
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      max-width: 700px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 0.5s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--taupe);
+    }
+
+    .hero-sub {
+      font-size: 12px;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      color: var(--taupe);
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.9s;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 2.5rem;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--sand);
+      padding-bottom: 4px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.1s;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .hero-cta:hover { color: var(--taupe); border-color: var(--taupe); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Marquee */
+    .marquee-wrap {
+      background: var(--ink);
+      padding: 1rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 18s linear infinite;
+    }
+
+    .marquee-track span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--sand);
+      padding: 0 2.5rem;
+    }
+
+    .marquee-track span.dot {
+      color: var(--taupe);
+      font-style: normal;
+      font-size: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* Philosophy section */
+    .philosophy {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+
+    .phil-left {
+      background: var(--stone);
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .phil-right {
+      background: var(--ivory);
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 0.5px solid var(--sand);
+    }
+
+    .section-label {
+      font-size: 9px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 2rem;
+    }
+
+    .phil-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(28px, 3.5vw, 42px);
+      line-height: 1.3;
+      color: var(--bark);
+      max-width: 380px;
+    }
+
+    .phil-body {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--taupe);
+      max-width: 340px;
+      margin-top: 2rem;
+    }
+
+    .phil-values {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .phil-value {
+      border-top: 0.5px solid var(--sand);
+      padding-top: 1.5rem;
+    }
+
+    .phil-value-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--bark);
+      margin-bottom: 0.5rem;
+    }
+
+    .phil-value-desc {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--taupe);
+      line-height: 1.8;
+    }
+
+    /* Collection */
+    .collection {
+      padding: 7rem 3.5rem;
+      background: var(--ivory);
+    }
+
+    .collection-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+
+    .collection-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .collection-title em { font-style: italic; color: var(--taupe); }
+
+    .collection-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1px;
+      background: var(--sand);
+    }
+
+    .collection-item {
+      background: var(--ivory);
+      aspect-ratio: 3/4;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease;
+    }
+
+    .collection-item:hover { background: var(--stone); }
+
+    .collection-item:nth-child(1) { aspect-ratio: 2/3; }
+
+    .item-number {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      color: var(--sand);
+    }
+
+    .item-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item-placeholder svg { opacity: 0.08; }
+
+    .item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: var(--bark);
+      position: relative;
+      z-index: 1;
+    }
+
+    .item-detail {
+      font-size: 9px;
+      font-weight: 200;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+/* Newsletter */
+    .newsletter {
+      background: var(--ink);
+      border-top: 0.5px solid #2e2820;
+    }
+
+    .nl-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+    }
+
+    .nl-left {
+      padding: 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 0.5px solid #2e2820;
+    }
+
+    .nl-tag {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 1.5rem;
+    }
+
+    .nl-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(36px, 4.5vw, 58px);
+      line-height: 1;
+      color: var(--ivory);
+      margin-bottom: 1.5rem;
+    }
+
+    .nl-title em { font-style: italic; color: var(--taupe); }
+
+    .nl-desc {
+      font-size: 13px;
+      font-weight: 200;
+      line-height: 2;
+      color: var(--taupe);
+      max-width: 340px;
+    }
+
+    .nl-right {
+      padding: 5rem 4rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .nl-form-wrap { width: 100%; }
+
+    .nl-input-group { margin-bottom: 1.5rem; }
+
+    .nl-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 0.5px solid #3a342e;
+      padding: 0.75rem 0;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 14px;
+      color: var(--ivory);
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .nl-input::placeholder { color: #3a342e; }
+    .nl-input:focus { border-bottom-color: var(--taupe); }
+
+    .nl-checks {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    .nl-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .nl-check input[type="checkbox"] { display: none; }
+
+    .nl-check-box {
+      width: 14px;
+      height: 14px;
+      border: 0.5px solid #3a342e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .nl-check input:checked + .nl-check-box {
+      background: var(--taupe);
+      border-color: var(--taupe);
+    }
+
+    .nl-check input:checked + .nl-check-box::after {
+      content: '';
+      width: 6px;
+      height: 4px;
+      border-left: 1px solid var(--ivory);
+      border-bottom: 1px solid var(--ivory);
+      transform: rotate(-45deg) translateY(-1px);
+      display: block;
+    }
+
+    .nl-check-label {
+      font-size: 11px;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: var(--taupe);
+    }
+
+    .nl-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: none;
+      border: 0.5px solid #3a342e;
+      padding: 14px 28px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .nl-btn:hover {
+      border-color: var(--taupe);
+      background: rgba(140, 127, 114, 0.08);
+    }
+
+    .nl-btn-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ivory);
+    }
+
+    .nl-btn-arrow {
+      font-size: 16px;
+      color: var(--taupe);
+      transition: transform 0.3s;
+    }
+
+    .nl-btn:hover .nl-btn-arrow { transform: translateX(4px); }
+
+    .nl-success {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border: 0.5px solid #2e2820;
+    }
+
+    .nl-success span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--sand);
+      line-height: 1.5;
+    }
+
+    .nl-privacy {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: #3a342e;
+      margin-top: 1rem;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 102;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 0.5px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--ivory);
+      z-index: 101;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu-inner a {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 42px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu-inner a:hover { color: var(--taupe); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex !important; }
+    }
+
+    /* Footer */
+    footer {
+      background: var(--ink);
+      padding: 5rem 3.5rem 3rem;
+      color: var(--taupe);
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 4rem;
+      border-bottom: 0.5px solid #2e2820;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ivory);
+    }
+
+    .footer-tagline {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-top: 0.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 4rem;
+    }
+
+    .footer-col h4 {
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-col ul li a {
+      font-size: 12px;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: var(--taupe);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-col ul li a:hover { color: var(--sand); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.15em;
+      color: #3a342e;
+    }
+    /* Instagram Feed */
+    .instagram {
+      background: var(--ivory);
+      border-top: 0.5px solid var(--stone);
+      padding: 5rem 3.5rem;
+    }
+
+    .ig-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+
+    .ig-tag {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 0.5rem;
+    }
+
+    .ig-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(28px, 4vw, 48px);
+      color: var(--ink);
+      letter-spacing: 0.05em;
+    }
+
+    .ig-follow-btn {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--sand);
+      padding-bottom: 4px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .ig-follow-btn:hover { color: var(--taupe); border-color: var(--taupe); }
+
+    .ig-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1px;
+      background: var(--sand);
+    }
+
+    .ig-post {
+      background: var(--stone);
+      aspect-ratio: 1/1;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .ig-post-tall {
+      grid-row: span 2;
+      aspect-ratio: unset;
+    }
+
+    .ig-post-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.4s ease;
+      min-height: 200px;
+    }
+
+    .ig-post:hover .ig-post-inner { background: var(--sand); }
+
+    .ig-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(28,23,18,0.5);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.25rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .ig-post:hover .ig-overlay { opacity: 1; }
+
+    .ig-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--ivory);
+      line-height: 1.5;
+    }
+
+    /* Lightbox */
+    .ig-lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(28,23,18,0.85);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ig-lightbox.open { display: flex; }
+
+    .ig-lightbox-close {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      background: none;
+      border: none;
+      color: var(--ivory);
+      font-size: 18px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .ig-lightbox-close:hover { opacity: 1; }
+
+    .ig-lightbox-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 800px;
+      width: 90%;
+      background: var(--ivory);
+    }
+
+    .ig-lightbox-img {
+      background: var(--stone);
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ig-lightbox-info {
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .ig-lightbox-handle {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+
+    .ig-lightbox-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.5;
+      color: var(--bark);
+    }
+
+    .ig-lightbox-link {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--sand);
+      padding-bottom: 3px;
+      width: fit-content;
+      transition: border-color 0.3s;
+    }
+
+    .ig-lightbox-link:hover { border-color: var(--ink); }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 2rem;
+      right: 1.75rem;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--taupe);
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 103;
+    }
+
+    .mobile-menu-close:hover { color: var(--ink); }
+
+    /* Featured Spotlight */
+    .spotlight {
+      background: var(--stone);
+      border-top: 0.5px solid var(--sand);
+      border-bottom: 0.5px solid var(--sand);
+    }
+
+    .spotlight-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+
+    .spotlight-img {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotlight-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s ease;
+    }
+
+    .spotlight:hover .spotlight-img img { transform: scale(1.03); }
+
+    .spotlight-badge {
+      position: absolute;
+      top: 2rem; left: 2rem;
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bark);
+      background: var(--sand);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    .spotlight-text {
+      padding: 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--ivory);
+      border-left: 0.5px solid var(--sand);
+    }
+
+    .spotlight-tag {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 1.5rem;
+    }
+
+    .spotlight-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .spotlight-title em { font-style: italic; color: var(--taupe); }
+
+    .spotlight-desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--taupe);
+      max-width: 360px;
+      margin-bottom: 1.5rem;
+    }
+
+    .spotlight-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--bark);
+      margin-bottom: 2rem;
+    }
+
+    .spotlight-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .spotlight-btn {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 13px 26px;
+      transition: all 0.3s ease;
+    }
+
+    .spotlight-btn.primary {
+      background: var(--ink);
+      color: var(--ivory);
+    }
+
+    .spotlight-btn.primary:hover { background: var(--bark); }
+
+    .spotlight-btn.secondary {
+      border: 0.5px solid var(--sand);
+      color: var(--ink);
+    }
+
+    .spotlight-btn.secondary:hover { background: var(--stone); }
+
+    .spotlight-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 0.5px solid var(--stone);
+    }
+
+    .spotlight-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.85rem 0;
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .sd-label {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+
+    .sd-value {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--bark);
+    }
+
+    /* Brand Story Teaser */
+    .story-teaser {
+      background: var(--ink);
+      border-top: 0.5px solid #2e2820;
+    }
+
+    .st-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 60vh;
+    }
+
+    .st-left {
+      padding: 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 0.5px solid #2e2820;
+    }
+
+    .st-tag {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 1.5rem;
+    }
+
+    .st-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(36px, 4.5vw, 56px);
+      line-height: 1;
+      color: var(--ivory);
+      margin-bottom: 2rem;
+    }
+
+    .st-title em { font-style: italic; color: var(--taupe); }
+
+    .st-body {
+      font-size: 13px;
+      font-weight: 200;
+      line-height: 2;
+      color: var(--taupe);
+      max-width: 360px;
+      margin-bottom: 1rem;
+    }
+
+    .st-link {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sand);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--taupe);
+      padding-bottom: 3px;
+      width: fit-content;
+      margin-top: 1rem;
+      transition: all 0.3s;
+    }
+
+    .st-link:hover { color: var(--ivory); border-color: var(--ivory); }
+
+    .st-right {
+      padding: 5rem 4rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .st-manifesto { width: 100%; }
+
+    .st-m-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 0.5px solid #2e2820;
+    }
+
+    .st-m-line:first-child { border-top: 0.5px solid #2e2820; }
+
+    .st-m-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--taupe);
+      min-width: 24px;
+      margin-top: 2px;
+    }
+
+    .st-m-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.4;
+      color: var(--sand);
+    }
+
+    /* Countdown */
+    .countdown {
+      background: var(--ivory);
+      border-top: 0.5px solid var(--stone);
+      border-bottom: 0.5px solid var(--stone);
+    }
+
+    .cd-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 50vh;
+      align-items: center;
+      padding: 5rem 3.5rem;
+      gap: 4rem;
+    }
+
+    .cd-tag {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 1.5rem;
+    }
+
+    .cd-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(36px, 4.5vw, 56px);
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .cd-title em { font-style: italic; color: var(--taupe); }
+
+    .cd-desc {
+      font-size: 13px;
+      font-weight: 200;
+      line-height: 2;
+      color: var(--taupe);
+      max-width: 320px;
+      margin-bottom: 2rem;
+    }
+
+    .cd-notify {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--sand);
+      padding-bottom: 3px;
+      transition: all 0.3s;
+    }
+
+    .cd-notify:hover { border-color: var(--ink); }
+
+    .cd-timer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cd-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(48px, 6vw, 80px);
+      line-height: 1;
+      color: var(--ink);
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .cd-label {
+      font-size: 9px;
+      font-weight: 200;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+
+    .cd-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      color: var(--sand);
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .cd-drop-name {
+      font-size: 10px;
+      font-weight: 200;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">RehabChild</a>
+    <ul class="nav-links">
+      <li><a href="index.html#collection">Collection</a></li>
+      <li><a href="index.html#philosophy">Philosophy</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+    <div class="mobile-menu-inner">
+      <a href="index.html" onclick="toggleMenu()">Home</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="lookbook.html" onclick="toggleMenu()">Lookbook</a>
+      <a href="about.html" onclick="toggleMenu()">About</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+
+    <p class="hero-tag">SS26 — The Healing Stage</p>
+    <h1 class="hero-title">Still<br><em>becoming.</em></h1>
+    <p class="hero-sub">Minimal clothing for the journey inward.</p>
+    <a href="#collection" class="hero-cta">Explore the collection</a>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>The Healing Stage</span><span class="dot">•</span>
+      <span>Wear Your Healing</span><span class="dot">•</span>
+      <span>Still Becoming</span><span class="dot">•</span>
+      <span>RehabChild</span><span class="dot">•</span>
+      <span>Quiet Luxury</span><span class="dot">•</span>
+      <span>The Healing Stage</span><span class="dot">•</span>
+      <span>Wear Your Healing</span><span class="dot">•</span>
+      <span>Still Becoming</span><span class="dot">•</span>
+      <span>RehabChild</span><span class="dot">•</span>
+      <span>Quiet Luxury</span><span class="dot">•</span>
+      <span>The Healing Stage</span><span class="dot">•</span>
+      <span>Wear Your Healing</span><span class="dot">•</span>
+      <span>Still Becoming</span><span class="dot">•</span>
+      <span>RehabChild</span><span class="dot">•</span>
+      <span>Quiet Luxury</span><span class="dot">•</span>
+    </div>
+  </div>
+
+  <!-- Philosophy -->
+  <section class="philosophy" id="philosophy">
+    <div class="phil-left">
+      <p class="section-label">Our Philosophy</p>
+      <blockquote class="phil-quote">"Healing is not a destination. It is the clothes you wear while you get there."</blockquote>
+      <p class="phil-body">RehabChild was born from a simple truth — that what we wear holds space for who we are becoming. Every piece is designed with intention, restraint, and quiet care.</p>
+    </div>
+    <div class="phil-right">
+      <p class="section-label">Brand Values</p>
+      <div class="phil-values">
+        <div class="phil-value">
+          <div class="phil-value-title">Stillness</div>
+          <div class="phil-value-desc">Clothes that don't demand attention — they hold it.</div>
+        </div>
+        <div class="phil-value">
+          <div class="phil-value-title">Intention</div>
+          <div class="phil-value-desc">Every piece a conscious choice, not a reaction.</div>
+        </div>
+        <div class="phil-value">
+          <div class="phil-value-title">Growth</div>
+          <div class="phil-value-desc">Worn through every stage of becoming yourself.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collection -->
+  <section class="collection" id="collection">
+    <div class="collection-header">
+      <h2 class="collection-title">SS26<br><em>Collection</em></h2>
+    </div>
+    <div class="collection-grid">
+      <div class="collection-item">
+        <span class="item-number">01</span>
+        <div class="item-placeholder">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <rect x="20" y="10" width="40" height="60" rx="2" stroke="#8C7F72" stroke-width="0.5"/>
+            <path d="M20 25 Q10 20 8 10 L20 10" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+            <path d="M60 25 Q70 20 72 10 L60 10" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="item-name">The Still Coat</div>
+        <div class="item-detail">Oversized — Warm Sand</div>
+      </div>
+      <div class="collection-item">
+        <span class="item-number">02</span>
+        <div class="item-placeholder">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+            <path d="M15 10 L45 10 L45 55 L15 55 Z" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+            <path d="M15 10 Q10 8 10 15 L15 20" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+            <path d="M45 10 Q50 8 50 15 L45 20" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="item-name">Rehab Tee</div>
+        <div class="item-detail">Relaxed — Ivory</div>
+      </div>
+      <div class="collection-item">
+        <span class="item-number">03</span>
+        <div class="item-placeholder">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+            <rect x="18" y="5" width="24" height="18" rx="1" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+            <path d="M10 23 L50 23 L50 58 L10 58 Z" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="item-name">Stage Trousers</div>
+        <div class="item-detail">Wide Leg — Stone</div>
+      </div>
+    </div>
+  </section>
+
+<!-- Featured Product Spotlight -->
+  <section class="spotlight">
+    <div class="spotlight-inner">
+      <div class="spotlight-img">
+        <img src="rehab-jacket.jpg" alt="The Rehab Jacket"/>
+        <span class="spotlight-badge">Limited Edition</span>
+      </div>
+      <div class="spotlight-text">
+        <p class="spotlight-tag">Featured piece — SS26</p>
+        <h2 class="spotlight-title">The Rehab<br><em>Jacket</em></h2>
+        <p class="spotlight-desc">Structured in ink-black cotton twill. Built for the becoming. Limited to 50 pieces this season — each one numbered.</p>
+        <div class="spotlight-price">GH₵ 760</div>
+        <div class="spotlight-actions">
+          <a href="shop.html" class="spotlight-btn primary">Shop now</a>
+          <a href="lookbook.html" class="spotlight-btn secondary">See in lookbook</a>
+        </div>
+        <div class="spotlight-details">
+          <div class="spotlight-detail">
+            <span class="sd-label">Material</span>
+            <span class="sd-value">100% Cotton Twill</span>
+          </div>
+          <div class="spotlight-detail">
+            <span class="sd-label">Fit</span>
+            <span class="sd-value">Structured, true to size</span>
+          </div>
+          <div class="spotlight-detail">
+            <span class="sd-label">Colourway</span>
+            <span class="sd-value">Ink — SS26</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Story Teaser -->
+  <section class="story-teaser">
+    <div class="st-inner">
+      <div class="st-left">
+        <p class="st-tag">Our story</p>
+        <h2 class="st-title">Not a brand.<br><em>A stage.</em></h2>
+        <p class="st-body">RehabChild was born from a deeply personal place — the recognition that healing is not a single moment, but a practice. A child in rehab is not broken. They are in the process of becoming whole.</p>
+        <p class="st-body">Every piece is designed to hold that space. To be worn through the hard days and the healing ones alike.</p>
+        <a href="about.html" class="st-link">Read our full story →</a>
+      </div>
+      <div class="st-right">
+        <div class="st-manifesto">
+          <div class="st-m-line">
+            <span class="st-m-num">01</span>
+            <span class="st-m-text">We believe healing is not linear.</span>
+          </div>
+          <div class="st-m-line">
+            <span class="st-m-num">02</span>
+            <span class="st-m-text">We dress for the version of ourselves we are becoming.</span>
+          </div>
+          <div class="st-m-line">
+            <span class="st-m-num">03</span>
+            <span class="st-m-text">We wear our healing — not as a wound, but as a declaration.</span>
+          </div>
+          <div class="st-m-line">
+            <span class="st-m-num">04</span>
+            <span class="st-m-text">We are always, still, becoming.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Countdown Timer -->
+  <section class="countdown">
+    <div class="cd-inner">
+      <div class="cd-left">
+        <p class="cd-tag">Coming soon</p>
+        <h2 class="cd-title">Next drop<br><em>arriving.</em></h2>
+        <p class="cd-desc">The RehabChild SS26 full collection drops soon. Sign up to be notified first.</p>
+        <a href="#newsletter" class="cd-notify">Get notified →</a>
+      </div>
+      <div class="cd-right">
+        <div class="cd-timer">
+          <div class="cd-unit">
+            <span class="cd-num" id="cdDays">00</span>
+            <span class="cd-label">Days</span>
+          </div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit">
+            <span class="cd-num" id="cdHours">00</span>
+            <span class="cd-label">Hours</span>
+          </div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit">
+            <span class="cd-num" id="cdMins">00</span>
+            <span class="cd-label">Minutes</span>
+          </div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit">
+            <span class="cd-num" id="cdSecs">00</span>
+            <span class="cd-label">Seconds</span>
+          </div>
+        </div>
+        <p class="cd-drop-name">SS26 — "The Healing Stage"</p>
+      </div>
+    </div>
+  </section>  
+
+<!-- Instagram Feed -->
+  <section class="instagram">
+    <div class="ig-header">
+      <div class="ig-header-left">
+        <p class="ig-tag">Follow the journey</p>
+        <h2 class="ig-title">@rehabchild</h2>
+      </div>
+      <a href="https://instagram.com/nuski.y" target="_blank" class="ig-follow-btn">Follow on Instagram</a>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-post" onclick="openPost(0)">
+        <div class="ig-post-inner">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="8" width="32" height="32" rx="1" stroke="#8C7F72" stroke-width="0.5"/><circle cx="24" cy="24" r="8" stroke="#8C7F72" stroke-width="0.5"/></svg>
+          <div class="ig-overlay"><span class="ig-caption">"Still becoming." — The Still Coat, SS26</span></div>
+        </div>
+      </div>
+      <div class="ig-post" onclick="openPost(1)">
+        <div class="ig-post-inner">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M10 38 L24 10 L38 38 Z" stroke="#8C7F72" stroke-width="0.5" fill="none"/></svg>
+          <div class="ig-overlay"><span class="ig-caption">"Wear your healing." — Rehab Tee, SS26</span></div>
+        </div>
+      </div>
+      <div class="ig-post" onclick="openPost(2)">
+        <div class="ig-post-inner">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="#8C7F72" stroke-width="0.5"/><circle cx="24" cy="24" r="6" stroke="#8C7F72" stroke-width="0.5"/></svg>
+          <div class="ig-overlay"><span class="ig-caption">"The healing stage." — Stage Trousers, SS26</span></div>
+        </div>
+      </div>
+      <div class="ig-post" onclick="openPost(3)">
+        <div class="ig-post-inner">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="16" width="32" height="24" rx="1" stroke="#8C7F72" stroke-width="0.5"/><path d="M16 16 Q16 8 24 8 Q32 8 32 16" stroke="#8C7F72" stroke-width="0.5" fill="none"/></svg>
+          <div class="ig-overlay"><span class="ig-caption">"Quiet luxury." — Stage Tote, SS26</span></div>
+        </div>
+      </div>
+      <div class="ig-post" onclick="openPost(4)">
+        <div class="ig-post-inner">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M8 24 Q24 8 40 24 Q24 40 8 24 Z" stroke="#8C7F72" stroke-width="0.5" fill="none"/></svg>
+          <div class="ig-overlay"><span class="ig-caption">"Born from the journey inward." — RehabChild</span></div>
+        </div>
+      </div>
+      <div class="ig-post ig-post-tall" onclick="openPost(5)">
+        <div class="ig-post-inner">
+          <svg width="48" height="72" viewBox="0 0 48 72" fill="none"><rect x="8" y="8" width="32" height="56" rx="1" stroke="#8C7F72" stroke-width="0.5"/><line x1="8" y1="28" x2="40" y2="28" stroke="#8C7F72" stroke-width="0.5"/><line x1="8" y1="48" x2="40" y2="48" stroke="#8C7F72" stroke-width="0.5"/></svg>
+          <div class="ig-overlay"><span class="ig-caption">"The Rehab Jacket — structured for the becoming."</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="ig-lightbox" id="igLightbox" onclick="closePost()">
+      <button class="ig-lightbox-close" onclick="closePost()">✕</button>
+      <div class="ig-lightbox-inner" id="igLightboxInner" onclick="event.stopPropagation()">
+        <div class="ig-lightbox-img" id="igLightboxImg"></div>
+        <div class="ig-lightbox-info">
+          <p class="ig-lightbox-handle">@rehabchild</p>
+          <p class="ig-lightbox-caption" id="igLightboxCaption"></p>
+          <a href="https://instagram.com/nuski.y" target="_blank" class="ig-lightbox-link">View on Instagram →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Newsletter -->
+  <section class="newsletter">
+    <div class="nl-inner">
+      <div class="nl-left">
+        <p class="nl-tag">Stay in the loop</p>
+        <h2 class="nl-title">Join the<br><em>healing stage.</em></h2>
+        <p class="nl-desc">Be the first to know about new drops, behind-the-scenes moments, and stories from the RehabChild community.</p>
+      </div>
+      <div class="nl-right">
+        <div class="nl-form-wrap">
+          <div class="nl-input-group">
+            <input type="text" id="nlName" placeholder="Your name" class="nl-input"/>
+          </div>
+          <div class="nl-input-group">
+            <input type="email" id="nlEmail" placeholder="Your email address" class="nl-input"/>
+          </div>
+          <div class="nl-checks">
+            <label class="nl-check">
+              <input type="checkbox" id="nlDrops" checked/>
+              <span class="nl-check-box"></span>
+              <span class="nl-check-label">New drops & collections</span>
+            </label>
+            <label class="nl-check">
+              <input type="checkbox" id="nlStories" checked/>
+              <span class="nl-check-box"></span>
+              <span class="nl-check-label">Brand stories & journal</span>
+            </label>
+            <label class="nl-check">
+              <input type="checkbox" id="nlOffers"/>
+              <span class="nl-check-box"></span>
+              <span class="nl-check-label">Exclusive offers</span>
+            </label>
+          </div>
+          <button class="nl-btn" onclick="handleNewsletter()">
+            <span class="nl-btn-text">Subscribe</span>
+            <span class="nl-btn-arrow">→</span>
+          </button>
+          <div class="nl-success" id="nlSuccess">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="7" stroke="#8C7F72" stroke-width="0.5"/>
+              <path d="M5 8 L7 10 L11 6" stroke="#8C7F72" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>You're on the list. Welcome to the healing stage.</span>
+          </div>
+          <p class="nl-privacy">We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="about">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">RehabChild</div>
+        <div class="footer-tagline">The Healing Stage</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Brand</h4>
+          <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Philosophy</a></li>
+            <li><a href="#">Sustainability</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#">SS26 Collection</a></li>
+            <li><a href="#">Essentials</a></li>
+            <li><a href="#">Lookbook</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://instagram.com/nuski.y" target="_blank">Instagram</a></li>
+            <li><a href="https://tiktok.com/@therehabchild" target="_blank">TikTok</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 RehabChild. All rights reserved.</span>
+      <span class="footer-copy">The Healing Stage — SS26</span>
+    </div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Replace YOUR_FORM_ID below with the ID Formspree gives you after signup
+    // (you can reuse the same form ID as the contact form, or create a separate one)
+    const NEWSLETTER_FORM_ENDPOINT = 'https://formspree.io/f/mzdljlrr';
+
+    async function handleNewsletter() {
+      const name = document.getElementById('nlName').value.trim();
+      const email = document.getElementById('nlEmail').value.trim();
+      if (!name || !email) {
+        alert('Please enter your name and email.');
+        return;
+      }
+
+      const drops = document.getElementById('nlDrops').checked;
+      const stories = document.getElementById('nlStories').checked;
+      const offers = document.getElementById('nlOffers').checked;
+
+      const btn = document.querySelector('.nl-btn');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(NEWSLETTER_FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: JSON.stringify({
+            formType: 'newsletter', name, email, drops, stories, offers
+          }),
+          mode: 'cors'
+        });
+
+        if (res.ok) {
+          document.getElementById('nlSuccess').style.display = 'flex';
+          document.getElementById('nlName').value = '';
+          document.getElementById('nlEmail').value = '';
+        } else {
+          alert('Something went wrong subscribing. Please try again.');
+        }
+      } catch (err) {
+        alert('Something went wrong subscribing. Please check your connection and try again.');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    const igCaptions = [
+      '"Still becoming." — The Still Coat, SS26',
+      '"Wear your healing." — Rehab Tee, SS26',
+      '"The healing stage." — Stage Trousers, SS26',
+      '"Quiet luxury." — Stage Tote, SS26',
+      '"Born from the journey inward." — RehabChild',
+      '"The Rehab Jacket — structured for the becoming."'
+    ];
+
+    function openPost(index) {
+      document.getElementById('igLightboxCaption').textContent = igCaptions[index];
+      document.getElementById('igLightbox').classList.add('open');
+    }
+
+    function closePost() {
+      document.getElementById('igLightbox').classList.remove('open');
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+
+    // Countdown timer — set your drop date here
+    const dropDate = new Date('2026-09-01T00:00:00');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = dropDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('cdDays').textContent = '00';
+        document.getElementById('cdHours').textContent = '00';
+        document.getElementById('cdMins').textContent = '00';
+        document.getElementById('cdSecs').textContent = '00';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
+      document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cdMins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('cdSecs').textContent = String(secs).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform += ' scale(2)';
+        ring.style.width = '48px';
+        ring.style.height = '48px';
+        ring.style.borderColor = '#1C1712';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '32px';
+        ring.style.height = '32px';
+        ring.style.borderColor = '#8C7F72';
+      });
+    });
+  </script>
+</body>
+</html>
