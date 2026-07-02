@@ -1,0 +1,205 @@
+/* ===== RehabChild Chat Assistant ===== */
+
+#rc-chat-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--ink, #1C1712);
+  color: var(--ivory, #F5F2ED);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  z-index: 9998;
+  transition: transform 0.2s ease;
+  border: none;
+}
+#rc-chat-toggle:hover { transform: scale(1.06); }
+#rc-chat-toggle svg { width: 26px; height: 26px; }
+
+#rc-chat-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #B5442E;
+  color: #fff;
+  font-size: 10px;
+  font-family: 'Jost', sans-serif;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#rc-chat-window {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  height: 460px;
+  max-height: calc(100vh - 140px);
+  background: var(--ivory, #F5F2ED);
+  border: 1px solid rgba(28,23,18,0.12);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.28);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9999;
+  font-family: 'Jost', sans-serif;
+}
+#rc-chat-window.rc-open { display: flex; }
+
+#rc-chat-header {
+  background: var(--ink, #1C1712);
+  color: var(--ivory, #F5F2ED);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#rc-chat-header .rc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  letter-spacing: 0.04em;
+}
+#rc-chat-header .rc-sub {
+  font-size: 11px;
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+  margin-top: 1px;
+}
+#rc-chat-close {
+  background: none;
+  border: none;
+  color: var(--ivory, #F5F2ED);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.7;
+}
+#rc-chat-close:hover { opacity: 1; }
+
+#rc-chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rc-msg {
+  max-width: 84%;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.rc-msg-bot {
+  background: #fff;
+  color: var(--ink, #1C1712);
+  align-self: flex-start;
+  border: 1px solid rgba(28,23,18,0.08);
+  border-bottom-left-radius: 3px;
+}
+.rc-msg-user {
+  background: var(--bark, #4A3F35);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+}
+.rc-msg a { color: inherit; text-decoration: underline; }
+
+.rc-quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-self: flex-start;
+  max-width: 100%;
+}
+.rc-chip {
+  background: #fff;
+  border: 1px solid var(--bark, #4A3F35);
+  color: var(--bark, #4A3F35);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Jost', sans-serif;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.rc-chip:hover { background: var(--bark, #4A3F35); color: #fff; }
+
+.rc-product-card {
+  display: flex;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid rgba(28,23,18,0.08);
+  border-radius: 10px;
+  padding: 8px;
+  align-self: flex-start;
+  max-width: 90%;
+  text-decoration: none;
+  color: var(--ink, #1C1712);
+}
+.rc-product-card img {
+  width: 52px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.rc-product-card .rc-pname {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+}
+.rc-product-card .rc-pprice {
+  font-size: 12px;
+  color: var(--bark, #4A3F35);
+  margin-top: 2px;
+}
+
+#rc-chat-input-row {
+  display: flex;
+  border-top: 1px solid rgba(28,23,18,0.1);
+  padding: 8px;
+  gap: 6px;
+  background: #fff;
+}
+#rc-chat-input {
+  flex: 1;
+  border: 1px solid rgba(28,23,18,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: 'Jost', sans-serif;
+  outline: none;
+  background: var(--ivory, #F5F2ED);
+  color: var(--ink, #1C1712);
+}
+#rc-chat-input:focus { border-color: var(--bark, #4A3F35); }
+#rc-chat-send {
+  background: var(--ink, #1C1712);
+  color: var(--ivory, #F5F2ED);
+  border: none;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Jost', sans-serif;
+}
+#rc-chat-send:hover { background: var(--bark, #4A3F35); }
+
+@media (max-width: 420px) {
+  #rc-chat-window { right: 16px; bottom: 88px; width: calc(100vw - 32px); }
+  #rc-chat-toggle { right: 16px; bottom: 16px; }
+}
