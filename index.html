@@ -16,6 +16,8 @@
       --taupe:    #8C7F72;
       --bark:     #4A3F35;
       --ink:      #1C1712;
+      --accent:   #5C6B4A;
+      --accent-light: #7C8C6A;
     }
 
     html { scroll-behavior: smooth; }
@@ -88,7 +90,7 @@
       transition: color 0.3s ease;
     }
 
-    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover { color: var(--accent); }
 
     /* Hero */
     .hero {
@@ -172,7 +174,7 @@
       transition: border-color 0.3s ease, color 0.3s ease;
     }
 
-    .hero-cta:hover { color: var(--taupe); border-color: var(--taupe); }
+    .hero-cta:hover { color: var(--accent); border-color: var(--accent); }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
@@ -485,7 +487,7 @@
 
     .nl-check input:checked + .nl-check-box {
       background: var(--taupe);
-      border-color: var(--taupe);
+      border-color: var(--accent);
     }
 
     .nl-check input:checked + .nl-check-box::after {
@@ -520,7 +522,7 @@
 
     .nl-btn:hover {
       border-color: var(--taupe);
-      background: rgba(140, 127, 114, 0.08);
+      background: rgba(92, 107, 74, 0.08);
     }
 
     .nl-btn-text {
@@ -987,7 +989,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 28px;
       font-weight: 300;
-      color: var(--bark);
+      color: var(--accent);
       margin-bottom: 2rem;
     }
 
@@ -1012,7 +1014,7 @@
       color: var(--ivory);
     }
 
-    .spotlight-btn.primary:hover { background: var(--bark); }
+    .spotlight-btn.primary:hover { background: var(--accent); }
 
     .spotlight-btn.secondary {
       border: 0.5px solid var(--sand);
@@ -1358,11 +1360,7 @@
       <div class="collection-item">
         <span class="item-number">01</span>
         <div class="item-placeholder">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-            <rect x="20" y="10" width="40" height="60" rx="2" stroke="#8C7F72" stroke-width="0.5"/>
-            <path d="M20 25 Q10 20 8 10 L20 10" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-            <path d="M60 25 Q70 20 72 10 L60 10" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-          </svg>
+          <img src="still-coat.jpg" alt="The Still Coat" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
         </div>
         <div class="item-name">The Still Coat</div>
         <div class="item-detail">Oversized — Warm Sand</div>
@@ -1370,11 +1368,7 @@
       <div class="collection-item">
         <span class="item-number">02</span>
         <div class="item-placeholder">
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-            <path d="M15 10 L45 10 L45 55 L15 55 Z" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-            <path d="M15 10 Q10 8 10 15 L15 20" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-            <path d="M45 10 Q50 8 50 15 L45 20" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-          </svg>
+          <img src="rehab-tee.jpg" alt="Rehab Tee" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
         </div>
         <div class="item-name">Rehab Tee</div>
         <div class="item-detail">Relaxed — Ivory</div>
@@ -1382,10 +1376,7 @@
       <div class="collection-item">
         <span class="item-number">03</span>
         <div class="item-placeholder">
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-            <rect x="18" y="5" width="24" height="18" rx="1" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-            <path d="M10 23 L50 23 L50 58 L10 58 Z" stroke="#8C7F72" stroke-width="0.5" fill="none"/>
-          </svg>
+          <img src="stage-trousers.jpg" alt="Stage Trousers" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
         </div>
         <div class="item-name">Stage Trousers</div>
         <div class="item-detail">Wide Leg — Stone</div>

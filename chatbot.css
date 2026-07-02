@@ -14,7 +14,7 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 18px rgba(0,0,0,0.25);
-  z-index: 9998;
+  z-index: 999998;
   transition: transform 0.2s ease;
   border: none;
 }
@@ -52,13 +52,13 @@
   display: none;
   flex-direction: column;
   overflow: hidden;
-  z-index: 9999;
+  z-index: 999999;
   font-family: 'Jost', sans-serif;
 }
 #rc-chat-window.rc-open { display: flex; }
 
 #rc-chat-header {
-  background: var(--ink, #1C1712);
+  background: var(--accent, #5C6B4A);
   color: var(--ivory, #F5F2ED);
   padding: 14px 16px;
   display: flex;
@@ -128,8 +128,8 @@
 }
 .rc-chip {
   background: #fff;
-  border: 1px solid var(--bark, #4A3F35);
-  color: var(--bark, #4A3F35);
+  border: 1px solid var(--accent, #5C6B4A);
+  color: var(--accent, #5C6B4A);
   border-radius: 999px;
   padding: 6px 12px;
   font-size: 12px;
@@ -137,7 +137,7 @@
   font-family: 'Jost', sans-serif;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.rc-chip:hover { background: var(--bark, #4A3F35); color: #fff; }
+.rc-chip:hover { background: var(--accent, #5C6B4A); color: #fff; }
 
 .rc-product-card {
   display: flex;
@@ -197,7 +197,7 @@
   cursor: pointer;
   font-family: 'Jost', sans-serif;
 }
-#rc-chat-send:hover { background: var(--bark, #4A3F35); }
+#rc-chat-send:hover { background: var(--accent, #5C6B4A); }
 
 @media (max-width: 420px) {
   #rc-chat-window { right: 16px; bottom: 88px; width: calc(100vw - 32px); }

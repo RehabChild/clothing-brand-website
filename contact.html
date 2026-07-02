@@ -10,7 +10,7 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --ivory: #F5F2ED; --stone: #E8E3DA; --sand: #C9BFB0;
-      --taupe: #8C7F72; --bark: #4A3F35; --ink: #1C1712;
+      --taupe: #8C7F72; --bark: #4A3F35; --ink: #1C1712; --accent: #5C6B4A; --accent-light: #7C8C6A;
     }
     html { scroll-behavior: smooth; }
     body { background: var(--ivory); color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
@@ -24,7 +24,7 @@
     .nav-logo { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a { font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
     /* Page layout */
     .contact-wrap {
@@ -164,7 +164,7 @@
       transition: border-color 0.3s, color 0.3s;
     }
 
-    .submit-btn:hover .submit-text { border-color: var(--ink); }
+    .submit-btn:hover .submit-text { border-color: var(--accent); }
 
     .submit-arrow {
       width: 32px; height: 32px; border: 0.5px solid var(--sand);
